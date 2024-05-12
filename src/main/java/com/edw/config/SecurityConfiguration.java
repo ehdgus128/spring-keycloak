@@ -35,6 +35,7 @@ public class SecurityConfiguration {
 
         http
                 .authorizeHttpRequests()
+                            .requestMatchers("/admin").hasRole("ADMIN") // admin 페이지는 ADMIN 권한이 있는 사용자만 접근 가능
                             .requestMatchers("/unauthenticated", "/oauth2/**", "/login/**").permitAll()
                             .anyRequest()
                                 .fullyAuthenticated()

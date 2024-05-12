@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <script>
+        function getAccessToken() {
+            // 서버로부터 액세스 토큰을 가져오는 요청을 보냅니다.
+            fetch('/getAccessToken')
+                .then(response => response.json())
+                .then(data => {
+                    // 액세스 토큰을 화면에 표시합니다.
+                    document.getElementById('accessToken').innerText = data.access_token;
+                })
+                .catch(error => console.error('Error fetching access token:', error));
+        }
+    </script>
+</head>
+<body onload="getAccessToken()">
+<h1>Welcome</h1>
+<p th:text="'Hello, ' + ${name} + '! Your email is ' + ${email}"></p>
+<a th:href="@{/admin}">Go to Admin Page</a>
+
+<!-- Access Token 표시 -->
+<p>Access Token: <span id="accessToken"></span></p>
+</body>
+</html>
