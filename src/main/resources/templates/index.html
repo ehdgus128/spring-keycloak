@@ -1,27 +1,131 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Welcome</title>-->
+<!--    <script>-->
+<!--        function getAccessToken() {-->
+<!--            // 서버로부터 액세스 토큰을 가져오는 요청을 보냅니다.-->
+<!--            fetch('/getAccessToken')-->
+<!--                .then(response => response.json())-->
+<!--                .then(data => {-->
+<!--                    // 액세스 토큰을 화면에 표시합니다.-->
+<!--                    document.getElementById('accessToken').innerText = data.access_token;-->
+<!--                })-->
+<!--                .catch(error => console.error('Error fetching access token:', error));-->
+<!--        }-->
+<!--    </script>-->
+<!--</head>-->
+<!--<body onload="getAccessToken()">-->
+<!--<h1>Welcome</h1>-->
+<!--<p th:text="'Hello, ' + ${name} + '! Your email is ' + ${email}"></p>-->
+<!--<a th:href="@{/admin}">Go to Admin Page</a>-->
+
+<!--&lt;!&ndash; Access Token 표시 &ndash;&gt;-->
+<!--<p>Access Token: <span id="accessToken"></span></p>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>Resource Server Main Page</title>
     <script>
+        function getUserInfo() {
+            console.log("getUserInfo 함수 호출됨");
+            // 서버로부터 사용자 정보를 가져오는 요청을 보냅니다.
+            fetch('/getUserInfo')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("사용자 정보:", data);
+                    // 사용자 정보를 화면에 표시합니다.
+                    displayUserInfo(data);
+                })
+                .catch(error => console.error('Error fetching user info:', error));
+        }
+
         function getAccessToken() {
+            console.log("getAccessToken 함수 호출됨");
             // 서버로부터 액세스 토큰을 가져오는 요청을 보냅니다.
             fetch('/getAccessToken')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
                 .then(data => {
+                    console.log("액세스 토큰:", data);
                     // 액세스 토큰을 화면에 표시합니다.
-                    document.getElementById('accessToken').innerText = data.access_token;
+                    document.getElementById('accessToken').innerText = data;
                 })
                 .catch(error => console.error('Error fetching access token:', error));
         }
+
+        function displayUserInfo(data) {
+            // 사용자 정보를 표시할 div 요소 가져오기
+            var userInfoDiv = document.getElementById('userInfo');
+
+            // 테이블 생성
+            var table = document.createElement('table');
+            table.border = '1';
+
+            // 테이블 헤더 생성
+            var tableHeader = document.createElement('thead');
+            var headerRow = tableHeader.insertRow();
+            for (var key in data[0]) {
+                var headerCell = document.createElement('th');
+                headerCell.textContent = key;
+                headerRow.appendChild(headerCell);
+            }
+            table.appendChild(tableHeader);
+
+            // 테이블 본문 생성
+            var tableBody = document.createElement('tbody');
+            data.forEach(function(item) {
+                var row = tableBody.insertRow();
+                for (var key in item) {
+                    var cell = row.insertCell();
+                    if (key === 'access' || key === 'bruteForceStatus') {
+                        // access 및 bruteForceStatus 필드의 값을 문자열로 변환하여 표시
+                        cell.textContent = JSON.stringify(item[key]);
+                    } else {
+                        cell.textContent = item[key];
+                    }
+                }
+            });
+            table.appendChild(tableBody);
+
+            // 이전에 생성된 테이블이 있다면 제거
+            while (userInfoDiv.firstChild) {
+                userInfoDiv.removeChild(userInfoDiv.firstChild);
+            }
+
+            // 테이블을 div에 추가
+            userInfoDiv.appendChild(table);
+        }
     </script>
 </head>
-<body onload="getAccessToken()">
-<h1>Welcome</h1>
+<body>
+<h1>Resource Server Main Page</h1>
 <p th:text="'Hello, ' + ${name} + '! Your email is ' + ${email}"></p>
-<a th:href="@{/admin}">Go to Admin Page</a>
+<a th:href="@{/admin}">Go to Admin Page</a><br>
 
-<!-- Access Token 표시 -->
+<!-- 버튼 추가 -->
+<button onclick="getAccessToken()">Get Access Token</button>
+<button onclick="getUserInfo()">Get User Info</button>
+
+<!-- 사용자 정보 표시를 위한 div -->
+<div id="userInfo"></div>
+
+<!-- 액세스 토큰 표시 -->
 <p>Access Token: <span id="accessToken"></span></p>
+
 </body>
 </html>
