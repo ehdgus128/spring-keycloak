@@ -51,16 +51,16 @@
             <version>2.5.2.RELEASE</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.keycloak</groupId>-->
-<!--            <artifactId>keycloak-spring-boot-starter</artifactId>-->
-<!--            <version>24.0.3</version> &lt;!&ndash; 최신 Keycloak 버전으로 업데이트 &ndash;&gt;-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.keycloak</groupId>-->
-<!--            <artifactId>keycloak-spring-security-adapter</artifactId>-->
-<!--            <version>24.0.3</version> &lt;!&ndash; 최신 Keycloak 버전으로 업데이트 &ndash;&gt;-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+            <version>24.0.3</version> <!-- 최신 Keycloak 버전으로 업데이트 -->
+        </dependency>
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-security-adapter</artifactId>
+            <version>24.0.3</version> <!-- 최신 Keycloak 버전으로 업데이트 -->
+        </dependency>
 
     </dependencies>
 
