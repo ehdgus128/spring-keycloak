@@ -7,14 +7,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * <pre>
- *     com.edw.config.SecurityConfiguration
- * </pre>
- *
- * @author Muhammad Edwin < edwin at redhat dot com >
- * 21 Mar 2023 20:16
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -23,10 +15,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .oauth2Client()
-                    .and()
+                .and()
                 .oauth2Login()
                 .tokenEndpoint()
-                    .and()
+                .and()
                 .userInfoEndpoint();
 
         http
@@ -35,13 +27,16 @@ public class SecurityConfiguration {
 
         http
                 .authorizeHttpRequests()
-                            .requestMatchers("/admin").hasRole("ADMIN") // admin 페이지는 ADMIN 권한이 있는 사용자만 접근 가능
-                            .requestMatchers("/unauthenticated", "/oauth2/**", "/login/**").permitAll()
-                            .anyRequest()
-                                .fullyAuthenticated()
+                .requestMatchers("/admin").hasRole("ADMIN")
+                .requestMatchers("/unlockUser/**").permitAll() // 모든 사용자에게 접근 허용
+                .requestMatchers("/unauthenticated", "/oauth2/**", "/login/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                    .logout()
-                    .logoutSuccessUrl("http://localhost:8080/realms/external/protocol/openid-connect/logout?redirect_uri=http://localhost:8081/");
+                .cors()
+                .and()
+                .csrf().disable()  // CSRF 보호 비활성화, 필요에 따라 활성화
+                .logout()
+                .logoutSuccessUrl("http://localhost:8080/realms/external/protocol/openid-connect/logout?redirect_uri=http://localhost:8081/");
 
         return http.build();
     }
