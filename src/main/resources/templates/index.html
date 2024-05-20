@@ -1,8 +1,105 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Resource Server Main Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 10px; /* Add padding to the body */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align items to the left */
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .unlock-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 0;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+        .unlock-button:hover {
+            background-color: #45a049;
+        }
+        .unlock-button:disabled {
+            background-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+        .table-container {
+            max-width: 70%;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            white-space: nowrap; /* Prevent text from wrapping */
+            overflow: hidden; /* Hide overflowing text */
+            text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+            max-width: 200px; /* Adjust as needed */
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        #userInfo {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start; /* Align to the left */
+        }
+        #accessToken {
+            font-weight: bold;
+            display: block;
+            max-width: 70%; /* Adjust as needed */
+            white-space: pre-wrap; /* Allow wrapping */
+            overflow: hidden;
+            word-break: break-all; /* Break words if too long */
+            margin-bottom: 20px; /* Add margin below the access token */
+        }
+        .container {
+            text-align: left;
+            padding: 20px;
+            width: 100%; /* Adjust as needed */
+        }
+        .nav-links {
+            margin-bottom: 20px;
+        }
+        .centered {
+            text-align: center;
+        }
+    </style>
     <script>
         function getUserInfo() {
             console.log("getUserInfo 함수 호출됨");
@@ -43,34 +140,43 @@
 
             var tableHeader = document.createElement('thead');
             var headerRow = tableHeader.insertRow();
-            for (var key in data[0]) {
+            var headers = ['Username', 'Email', 'First Name', 'Last Name', 'Failures', 'Disabled', 'Lock Status'];
+            headers.forEach(function(header) {
                 var headerCell = document.createElement('th');
-                headerCell.textContent = key;
+                headerCell.textContent = header;
                 headerRow.appendChild(headerCell);
-            }
+            });
             table.appendChild(tableHeader);
 
             var tableBody = document.createElement('tbody');
             data.forEach(function(item) {
                 var row = tableBody.insertRow();
-                for (var key in item) {
+                var values = [
+                    item.username,
+                    item.email,
+                    item.firstName,
+                    item.lastName,
+                    item.bruteForceStatus ? item.bruteForceStatus.numFailures : '',
+                    item.bruteForceStatus ? item.bruteForceStatus.disabled : ''
+                ];
+                values.forEach(function(value) {
                     var cell = row.insertCell();
-                    if (key === 'access' || key === 'bruteForceStatus') {
-                        cell.textContent = JSON.stringify(item[key]);
-                    } else {
-                        cell.textContent = item[key];
-                    }
-                }
-                // bruteForceStatus.disabled가 true인 경우에만 잠금 해제 버튼 추가
-                if (item.bruteForceStatus && item.bruteForceStatus.disabled) {
-                    var unlockCell = row.insertCell();
-                    var unlockButton = document.createElement('button');
-                    unlockButton.textContent = 'Unlock';
+                    cell.textContent = value;
+                });
+
+                var actionCell = row.insertCell();
+                var unlockButton = document.createElement('button');
+                unlockButton.textContent = 'Unlock';
+                unlockButton.className = 'unlock-button';
+                if (!item.bruteForceStatus || !item.bruteForceStatus.disabled) {
+                    unlockButton.disabled = true;
+                } else {
                     unlockButton.onclick = function() {
                         unlockUser(item.id);
                     };
-                    unlockCell.appendChild(unlockButton);
                 }
+                actionCell.appendChild(unlockButton);
+                actionCell.className = 'centered';
             });
             table.appendChild(tableBody);
 
@@ -97,24 +203,39 @@
                 })
                 .then(data => {
                     console.log("사용자 잠금 해제됨:", data);
-                    getUserInfo();  // 업데이트된 사용자 정보를 다시 가져옴
+                    getUserInfo();
                 })
                 .catch(error => console.error('Error unlocking user:', error));
         }
 
+        function getUserDetails() {
+            fetch('/getUserDetails')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('username').textContent = data.name;
+                    document.getElementById('useremail').textContent = data.email;
+                })
+                .catch(error => console.error('Error fetching user details:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', getUserDetails);
     </script>
 </head>
 <body>
-<h1>Resource Server Main Page</h1>
-<p th:text="'Hello, ' + ${name} + '! Your email is ' + ${email}"></p>
-<a th:href="@{/admin}">Go to Admin Page</a><br>
+<div class="container">
+    <h1>Resource Server</h1>
+    <p>username : <span id="username"></span></p>
+    <p>useremail : <span id="useremail"></span></p>
+    <button onclick="getAccessToken()">Get Access Token</button>
+    <button onclick="getUserInfo()">Get User Info</button>
+    <p>Access Token: <span id="accessToken"></span></p>
+    <div id="userInfo" class="table-container"></div>
 
-<button onclick="getAccessToken()">Get Access Token</button>
-<button onclick="getUserInfo()">Get User Info</button>
+    <br>
 
-<div id="userInfo"></div>
-
-<p>Access Token: <span id="accessToken"></span></p>
-
+    <div class="nav-links">
+        <a href="/admin">Go to Admin Page</a>
+    </div>
+</div>
 </body>
 </html>

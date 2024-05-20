@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @Controller
@@ -33,6 +35,9 @@ public class KeycloakController {
         for (GrantedAuthority authority : authorities) {
             String roleName = authority.getAuthority();
         }
+
+        System.out.println("user.getAttribute(\"name\") : " + user.getAttribute("name"));
+        System.out.println("user.getAttribute(\"email\") : " + user.getAttribute("email"));
 
         model.addAttribute("name", user.getAttribute("name"));
         model.addAttribute("email", user.getAttribute("email"));
@@ -150,5 +155,14 @@ public class KeycloakController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error unlocking user");
         }
+    }
+
+    @GetMapping("/getUserDetails")
+    public ResponseEntity<Map<String, String>> getUserDetails() {
+        OAuth2User user = (OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Map<String, String> userDetails = new HashMap<>();
+        userDetails.put("name", user.getAttribute("name"));
+        userDetails.put("email", user.getAttribute("email"));
+        return ResponseEntity.ok(userDetails);
     }
 }
