@@ -28,6 +28,12 @@
         button:hover {
             background-color: #45a049;
         }
+        .logout-button {
+            background-color: #f44336; /* Red color for logout button */
+        }
+        .logout-button:hover {
+            background-color: #e53935;
+        }
         .unlock-button {
             background-color: #4CAF50;
             color: white;
@@ -79,14 +85,14 @@
             display: flex;
             justify-content: flex-start; /* Align to the left */
         }
-        #accessToken {
+        #accessTokenContainer {
             font-weight: bold;
-            display: block;
+            display: none; /* Initially hidden */
             max-width: 70%; /* Adjust as needed */
             white-space: pre-wrap; /* Allow wrapping */
             overflow: hidden;
             word-break: break-all; /* Break words if too long */
-            margin-bottom: 20px; /* Add margin below the access token */
+            margin-bottom: 10px; /* Reduce margin below the access token */
         }
         .container {
             text-align: left;
@@ -98,6 +104,12 @@
         }
         .centered {
             text-align: center;
+        }
+        .section-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px; /* Adjust margin for better spacing */
         }
     </style>
     <script>
@@ -112,6 +124,7 @@
                 })
                 .then(data => {
                     console.log("사용자 정보:", data);
+                    document.getElementById('userListTitle').style.display = 'block'; // Show the User List title
                     displayUserInfo(data);
                 })
                 .catch(error => console.error('Error fetching user info:', error));
@@ -129,6 +142,7 @@
                 .then(data => {
                     console.log("액세스 토큰:", data);
                     document.getElementById('accessToken').innerText = data;
+                    document.getElementById('accessTokenContainer').style.display = 'block'; // Show the access token
                 })
                 .catch(error => console.error('Error fetching access token:', error));
         }
@@ -219,23 +233,23 @@
         }
 
         document.addEventListener('DOMContentLoaded', getUserDetails);
+
     </script>
 </head>
 <body>
 <div class="container">
-    <h1>Resource Server</h1>
+    <h1>Test Server (8081)</h1>
     <p>username : <span id="username"></span></p>
     <p>useremail : <span id="useremail"></span></p>
     <button onclick="getAccessToken()">Get Access Token</button>
     <button onclick="getUserInfo()">Get User Info</button>
-    <p>Access Token: <span id="accessToken"></span></p>
-    <div id="userInfo" class="table-container"></div>
-
-    <br>
-
-    <div class="nav-links">
-        <a href="/admin">Go to Admin Page</a>
+    <div id="accessTokenContainer">
+        <p class="section-title">Access Token:</p>
+        <p><span id="accessToken"></span></p>
     </div>
+    <p id="userListTitle" class="section-title">User List</p> <!-- User List title -->
+    <div id="userInfo" class="table-container"></div><br>
+    <button class="logout-button" onclick="logout()">Logout</button>
 </div>
 </body>
 </html>

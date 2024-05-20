@@ -1,5 +1,8 @@
 package com.edw.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +23,9 @@ import java.util.Objects;
 
 @Controller
 public class KeycloakController {
+
+    @Value("${keycloak.realm}")
+    private String realm;
 
     @GetMapping(path = "/")
     public String index(Model model) {
@@ -61,11 +67,7 @@ public class KeycloakController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        // office
-//        String requestBody = "grant_type=password&username=admin&password=admin&client_id=admin-cli&client_secret=ypvI6Cvr1WfRWehHfDGZ6o3dz76UpoN3";
-        // home
         String requestBody = "grant_type=password&username=admin&password=admin&client_id=admin-cli&client_secret=P5RqOALzM0n4JNgMCfORUewtajmSTKP0";
-
 
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
 

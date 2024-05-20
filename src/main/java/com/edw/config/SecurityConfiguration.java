@@ -41,8 +41,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/admin/**").hasRole("admin")
                 .requestMatchers("/user/**").hasRole("user")
-                .requestMatchers("/unlockUser/**").permitAll()
-                .requestMatchers("/unauthenticated", "/oauth2/**", "/login/**").permitAll()
+                .requestMatchers("/unauthenticated", "/oauth2/**", "/login/**", "/unlockUser/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
@@ -51,7 +50,10 @@ public class SecurityConfiguration {
                 .oauth2Login()
                 .and()
                 .logout()
-                .logoutSuccessUrl("http://localhost:8080/realms/your-realm/protocol/openid-connect/logout?redirect_uri=http://localhost:8081/");
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/post-logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
         return http.build();
     }
 
