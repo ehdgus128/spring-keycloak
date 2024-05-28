@@ -44,7 +44,7 @@ public class KeycloakService {
     }
 
     public String getAccessToken(String username, String password) {
-        String url = "http://localhost:8080/realms/external/protocol/openid-connect/token";
+        String url = "http://172.30.1.54:8080/realms/external/protocol/openid-connect/token";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

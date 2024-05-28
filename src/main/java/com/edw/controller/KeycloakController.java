@@ -62,7 +62,7 @@ public class KeycloakController {
 
     @GetMapping("/getAccessToken")
     public ResponseEntity<String> getAccessToken() {
-        String url = "http://localhost:8080/realms/master/protocol/openid-connect/token";
+        String url = "http://172.30.1.54:8080/realms/master/protocol/openid-connect/token";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -94,7 +94,7 @@ public class KeycloakController {
 
     @GetMapping("/getUserInfo")
     public ResponseEntity<String> getUserInfo() {
-        String url = "http://localhost:8080/admin/realms/external/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=";
+        String url = "http://172.30.1.54:8080/admin/realms/external/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=";
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -127,7 +127,7 @@ public class KeycloakController {
     @DeleteMapping("/unlockUser/{userId}")
     public ResponseEntity<String> unlockUser(@PathVariable String userId) {
 
-        String url = String.format("http://localhost:8080/admin/realms/external/attack-detection/brute-force/users/%s", userId);
+        String url = String.format("http://172.30.1.54:8080/admin/realms/external/attack-detection/brute-force/users/%s", userId);
 
         HttpHeaders headers = new HttpHeaders();
 
