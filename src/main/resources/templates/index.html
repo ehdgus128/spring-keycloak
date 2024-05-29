@@ -87,7 +87,7 @@
         }
         #accessTokenContainer {
             font-weight: bold;
-            display: none; /* Initially hidden */
+            display: block; /* Initially hidden */
             max-width: 70%; /* Adjust as needed */
             white-space: pre-wrap; /* Allow wrapping */
             overflow: hidden;
@@ -112,144 +112,114 @@
             margin-bottom: 10px; /* Adjust margin for better spacing */
         }
     </style>
-    <script>
-        function getUserInfo() {
-            console.log("getUserInfo 함수 호출됨");
-            fetch('/getUserInfo')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("사용자 정보:", data);
-                    document.getElementById('userListTitle').style.display = 'block'; // Show the User List title
-                    displayUserInfo(data);
-                })
-                .catch(error => console.error('Error fetching user info:', error));
-        }
-
-        function getAccessToken() {
-            console.log("getAccessToken 함수 호출됨");
-            fetch('/getAccessToken')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    console.log("액세스 토큰:", data);
-                    document.getElementById('accessToken').innerText = data;
-                    document.getElementById('accessTokenContainer').style.display = 'block'; // Show the access token
-                })
-                .catch(error => console.error('Error fetching access token:', error));
-        }
-
-        function displayUserInfo(data) {
-            var userInfoDiv = document.getElementById('userInfo');
-            var table = document.createElement('table');
-            table.border = '1';
-
-            var tableHeader = document.createElement('thead');
-            var headerRow = tableHeader.insertRow();
-            var headers = ['Username', 'Email', 'First Name', 'Last Name', 'Failures', 'Disabled', 'Lock Status'];
-            headers.forEach(function(header) {
-                var headerCell = document.createElement('th');
-                headerCell.textContent = header;
-                headerRow.appendChild(headerCell);
-            });
-            table.appendChild(tableHeader);
-
-            var tableBody = document.createElement('tbody');
-            data.forEach(function(item) {
-                var row = tableBody.insertRow();
-                var values = [
-                    item.username,
-                    item.email,
-                    item.firstName,
-                    item.lastName,
-                    item.bruteForceStatus ? item.bruteForceStatus.numFailures : '',
-                    item.bruteForceStatus ? item.bruteForceStatus.disabled : ''
-                ];
-                values.forEach(function(value) {
-                    var cell = row.insertCell();
-                    cell.textContent = value;
-                });
-
-                var actionCell = row.insertCell();
-                var unlockButton = document.createElement('button');
-                unlockButton.textContent = 'Unlock';
-                unlockButton.className = 'unlock-button';
-                if (!item.bruteForceStatus || !item.bruteForceStatus.disabled) {
-                    unlockButton.disabled = true;
-                } else {
-                    unlockButton.onclick = function() {
-                        unlockUser(item.id);
-                    };
-                }
-                actionCell.appendChild(unlockButton);
-                actionCell.className = 'centered';
-            });
-            table.appendChild(tableBody);
-
-            while (userInfoDiv.firstChild) {
-                userInfoDiv.removeChild(userInfoDiv.firstChild);
-            }
-
-            userInfoDiv.appendChild(table);
-        }
-
-        function unlockUser(userId) {
-            console.log("unlockUser 함수 호출됨, userId:", userId);
-
-            fetch(`/unlockUser/${userId}`, {
-                method: 'DELETE',
-            })
-                .then(response => {
-                    console.log("응답 상태 코드:", response.status);
-                    console.log("응답 본문:", response);
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    console.log("사용자 잠금 해제됨:", data);
-                    getUserInfo();
-                })
-                .catch(error => console.error('Error unlocking user:', error));
-        }
-
-        function getUserDetails() {
-            fetch('/getUserDetails')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('username').textContent = data.name;
-                    document.getElementById('useremail').textContent = data.email;
-                })
-                .catch(error => console.error('Error fetching user details:', error));
-        }
-
-        document.addEventListener('DOMContentLoaded', getUserDetails);
-
-    </script>
 </head>
 <body>
 <div class="container">
-    <h1>Test Server (8081)</h1>
-    <p>username : <span id="username"></span></p>
-    <p>useremail : <span id="useremail"></span></p>
-    <button onclick="getAccessToken()">Get Access Token</button>
-    <button onclick="getUserInfo()">Get User Info</button>
+    <h1>Test Server (8083)</h1>
+    <p>username : <span id="username" th:text="${name}"></span></p>
+    <p>useremail : <span id="useremail" th:text="${email}"></span></p>
+    <button id="getUserInfo" onclick="getUserInfo()">Get User Info</button>
     <div id="accessTokenContainer">
         <p class="section-title">Access Token:</p>
-        <p><span id="accessToken"></span></p>
+        <p id="accessToken" th:text="${accessToken}"></p>
     </div>
     <p id="userListTitle" class="section-title">User List</p> <!-- User List title -->
     <div id="userInfo" class="table-container"></div><br>
     <button class="logout-button" onclick="logout()">Logout</button>
 </div>
+<script>
+    function getUserInfo() {
+        console.log("getUserInfo 함수 호출됨");
+        fetch('/getUserInfo')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("사용자 정보:", data);
+                document.getElementById('userListTitle').style.display = 'block'; // Show the User List title
+                displayUserInfo(data);
+            })
+            .catch(error => console.error('Error fetching user info:', error));
+    }
+
+    function displayUserInfo(data) {
+        var userInfoDiv = document.getElementById('userInfo');
+        var table = document.createElement('table');
+        table.border = '1';
+
+        var tableHeader = document.createElement('thead');
+        var headerRow = tableHeader.insertRow();
+        var headers = ['Username', 'Email', 'First Name', 'Last Name', 'Failures', 'Disabled', 'Lock Status'];
+        headers.forEach(function(header) {
+            var headerCell = document.createElement('th');
+            headerCell.textContent = header;
+            headerRow.appendChild(headerCell);
+        });
+        table.appendChild(tableHeader);
+
+        var tableBody = document.createElement('tbody');
+        data.forEach(function(item) {
+            var row = tableBody.insertRow();
+            var values = [
+                item.username,
+                item.email,
+                item.firstName,
+                item.lastName,
+                item.bruteForceStatus ? item.bruteForceStatus.numFailures : '',
+                item.bruteForceStatus ? item.bruteForceStatus.disabled : ''
+            ];
+            values.forEach(function(value) {
+                var cell = row.insertCell();
+                cell.textContent = value;
+            });
+
+            var actionCell = row.insertCell();
+            var unlockButton = document.createElement('button');
+            unlockButton.textContent = 'Unlock';
+            unlockButton.className = 'unlock-button';
+            if (!item.bruteForceStatus || !item.bruteForceStatus.disabled) {
+                unlockButton.disabled = true;
+            } else {
+                unlockButton.onclick = function() {
+                    unlockUser(item.id);
+                };
+            }
+            actionCell.appendChild(unlockButton);
+            actionCell.className = 'centered';
+        });
+        table.appendChild(tableBody);
+
+        while (userInfoDiv.firstChild) {
+            userInfoDiv.removeChild(userInfoDiv.firstChild);
+        }
+
+        userInfoDiv.appendChild(table);
+    }
+
+    function unlockUser(userId) {
+        console.log("unlockUser 함수 호출됨, userId:", userId);
+
+        fetch(`/unlockUser/${userId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                console.log("응답 상태 코드:", response.status);
+                console.log("응답 본문:", response);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log("사용자 잠금 해제됨:", data);
+                getUserInfo();
+            })
+            .catch(error => console.error('Error unlocking user:', error));
+    }
+
+</script>
 </body>
 </html>

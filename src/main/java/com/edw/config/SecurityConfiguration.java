@@ -14,11 +14,15 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Bean
     public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
@@ -48,6 +52,7 @@ public class SecurityConfiguration {
                 .cors()
                 .and()
                 .oauth2Login()
+                .successHandler(customAuthenticationSuccessHandler)  // 로그인 성공 핸들러 등록
                 .and()
                 .logout()
                 .logoutUrl("/logout")
