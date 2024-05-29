@@ -55,10 +55,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         OAuth2AuthorizedClient authorizedClient = authorizedClientManager.authorize(authorizeRequest);
 
         if (authorizedClient != null) {
-            String tokenValue = authorizedClient.getAccessToken().getTokenValue();
+            String accessTokenValue = authorizedClient.getAccessToken().getTokenValue();
+            String refreshTokenValue = authorizedClient.getRefreshToken().getTokenValue();
 
-            // 액세스 토큰을 세션에 저장
-            request.getSession().setAttribute("accessToken", tokenValue);
+            // accessToken을 세션에 저장
+            request.getSession().setAttribute("accessToken", accessTokenValue);
+            // refreshToken을 세션에 저장
+            request.getSession().setAttribute("refreshToken", refreshTokenValue);
 
             // 액세스 토큰을 포함하여 리다이렉트
             response.sendRedirect("/");

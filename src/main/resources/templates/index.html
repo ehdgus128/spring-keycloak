@@ -118,10 +118,12 @@
     <h1>Test Server (8083)</h1>
     <p>username : <span id="username" th:text="${name}"></span></p>
     <p>useremail : <span id="useremail" th:text="${email}"></span></p>
-    <button id="getUserInfo" onclick="getUserInfo()">Get User Info</button>
+    <button id="getUserInfo" onclick="getUserInfo()">ALL USER LIST SEARCH</button>
     <div id="accessTokenContainer">
         <p class="section-title">Access Token:</p>
         <p id="accessToken" th:text="${accessToken}"></p>
+        <p class="section-title">Refresh Token:</p>
+        <p id="refreshToken" th:text="${refreshToken}"></p>
     </div>
     <p id="userListTitle" class="section-title">User List</p> <!-- User List title -->
     <div id="userInfo" class="table-container"></div><br>
@@ -133,6 +135,7 @@
         fetch('/getUserInfo')
             .then(response => {
                 if (!response.ok) {
+                    alert("권한이 없습니다 !!");
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
@@ -218,6 +221,36 @@
                 getUserInfo();
             })
             .catch(error => console.error('Error unlocking user:', error));
+    }
+
+    function logout() {
+        console.log("logout 함수 호출됨");
+
+        var clientId = "resource-server1";
+        var refreshToken = document.getElementById('refreshToken').textContent;
+        var clientSecret = "Wxjl5wFfbjS19i5aDdTXhcemN9v2CqPK";
+        var postLogoutRedirectUri = "http://localhost:8083/oauth2/authorization/external";
+
+        var formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
+
+        fetch("http://localhost:8080/realms/external/protocol/openid-connect/logout", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        })
+        .then(response => {
+            if (response.status === 204) {
+                console.log("로그아웃 성공");
+                window.location.href = postLogoutRedirectUri;
+            } else {
+                console.error("로그아웃 실패:", response.status);
+            }
+        })
+        .catch(error => {
+            console.error("로그아웃 요청 중 오류 발생:", error);
+        });
     }
 
 </script>

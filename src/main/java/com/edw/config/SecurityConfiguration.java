@@ -45,20 +45,23 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/admin/**").hasRole("admin")
                 .requestMatchers("/user/**").hasRole("user")
-                .requestMatchers("/unauthenticated", "/oauth2/**", "/login/**", "/unlockUser/**").permitAll()
+                .requestMatchers("/unauthenticated", "/oauth2/**", "/unlockUser/**", "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
                 .cors()
                 .and()
                 .oauth2Login()
-                .successHandler(customAuthenticationSuccessHandler)  // 로그인 성공 핸들러 등록
+                .loginPage("/oauth2/authorization/external")  // 사용자 정의 로그인 페이지 설정
+                .successHandler(customAuthenticationSuccessHandler)
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/post-logout")
+                .logoutSuccessUrl("/login")  // 로그아웃 후 리디렉션 URL 설정
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID");
+                .deleteCookies("JSESSIONID")
+                .and()
+                .formLogin().disable();  // 폼 로그인 비활성화
         return http.build();
     }
 
