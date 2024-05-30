@@ -127,7 +127,7 @@
     </div>
     <p id="userListTitle" class="section-title">User List</p> <!-- User List title -->
     <div id="userInfo" class="table-container"></div><br>
-    <button class="logout-button" onclick="logout()">Logout</button>
+    <button class="logout-button" onclick="confirmLogout()">Logout</button>
 </div>
 <script>
     function getUserInfo() {
@@ -223,6 +223,12 @@
             .catch(error => console.error('Error unlocking user:', error));
     }
 
+    function confirmLogout() {
+        if (confirm("로그아웃 하시겠습니까?")) {
+            logout();
+        }
+    }
+
     // office
     function logout() {
         console.log("logout 함수 호출됨");
@@ -244,6 +250,7 @@
         .then(response => {
             if (response.status === 204) {
                 console.log("로그아웃 성공");
+                alert("로그아웃 성공. 로그인페이지로 이동합니다.");
                 window.location.href = postLogoutRedirectUri;
             } else {
                 console.error("로그아웃 실패:", response.status);
@@ -276,6 +283,7 @@
         .then(response => {
             if (response.status === 204) {
                 console.log("로그아웃 성공");
+                alert("로그아웃 성공. 로그인페이지로 이동합니다.");
                 window.location.href = postLogoutRedirectUri;
             } else {
                 console.error("로그아웃 실패:", response.status);
