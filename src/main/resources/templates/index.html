@@ -223,18 +223,42 @@
             .catch(error => console.error('Error unlocking user:', error));
     }
 
+    // office
     function logout() {
         console.log("logout 함수 호출됨");
 
-        // office
-        /*
         var clientId = "resource-server1";
         var clientSecret = "mHiwhAmwjCf2Eh7AGF32VZ4p7fCUbFqh";
         var refreshToken = document.getElementById('refreshToken').textContent;
-        var postLogoutRedirectUri = "http://172.30.1.54:8083/oauth2/authorization/external";
-        */
+        var postLogoutRedirectUri = "http://localhost:8083/oauth2/authorization/external";
 
-        // home
+        var formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
+
+        fetch("http://172.30.1.54:8080/realms/external/protocol/openid-connect/logout", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        })
+        .then(response => {
+            if (response.status === 204) {
+                console.log("로그아웃 성공");
+                window.location.href = postLogoutRedirectUri;
+            } else {
+                console.error("로그아웃 실패:", response.status);
+            }
+        })
+        .catch(error => {
+            console.error("로그아웃 요청 중 오류 발생:", error);
+        });
+    }
+
+    // home
+    /*
+    function logout() {
+        console.log("logout 함수 호출됨");
+
         var clientId = "resource-server1";
         var clientSecret = "Wxjl5wFfbjS19i5aDdTXhcemN9v2CqPK";
         var refreshToken = document.getElementById('refreshToken').textContent;
@@ -261,6 +285,7 @@
             console.error("로그아웃 요청 중 오류 발생:", error);
         });
     }
+    */
 
 </script>
 </body>
