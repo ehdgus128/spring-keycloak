@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class KeycloakController {
@@ -33,14 +35,6 @@ public class KeycloakController {
         // 인증 객체 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // 인증 객체에서 권한 목록 가져오기
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        // 각 권한을 반복하여 역할 이름 가져오기
-        for (GrantedAuthority authority : authorities) {
-            String roleName = authority.getAuthority();
-        }
-
         System.out.println("user.getAttribute(\"name\") : " + user.getAttribute("name"));
         System.out.println("user.getAttribute(\"email\") : " + user.getAttribute("email"));
         System.out.println("accessToken : " + accessToken);
@@ -50,6 +44,7 @@ public class KeycloakController {
         model.addAttribute("email", user.getAttribute("email"));
         model.addAttribute("accessToken", accessToken);
         model.addAttribute("refreshToken", refreshToken);
+
         return "index";
     }
 
