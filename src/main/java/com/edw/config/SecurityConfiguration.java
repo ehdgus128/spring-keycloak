@@ -61,7 +61,7 @@ public class SecurityConfiguration {
                 .logout()
                 .logoutUrl("/logout")
                 .addLogoutHandler(customLogoutSuccessHandler)
-                .logoutSuccessUrl("http://172.30.1.93:8083/oauth2/authorization/external")  // 로그아웃 후 리디렉션 URL 설정
+                .logoutSuccessUrl("/oauth2/authorization/external")  // 로그아웃 후 리디렉션 URL 설정
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .and()

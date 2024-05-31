@@ -1,3 +1,18 @@
+## 개인 메모 (작업 위치 변경 시 설정 확인)
+```
+1) application.properties
+    - Spring Security OAuth2
+    - Keycloak
+    - Data Dictionary Logout URL
+
+2) KeycloakController
+    - getUserInfo()
+    - unlockUser()
+
+3) index.html
+    - async function logout()
+```
+
 # Spring Boot 3, Spring Security, and Keycloak
 
 ## Purpose
