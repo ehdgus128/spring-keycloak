@@ -115,8 +115,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>Test Server (8083)</h1>
-    <a href="http://172.30.1.60:9999/dashboard">
+    <h1>Main Portal (8083)</h1>
+    <a href="http://172.30.1.60:9999/dashboard" target="_blank">
         <button style="position: absolute; top: 10px; right: 10px;"> Data Dictionary Server Link</button>
     </a>
     <p>username : <span id="username" th:text="${name}"></span></p>
@@ -255,7 +255,7 @@
             const clientId = config.client_id;
             const clientSecret = config.client_secret;
             const refreshToken = config.refreshToken;
-            const postLogoutRedirectUri = "http://172.30.1.93:8083/oauth2/authorization/external";
+            const postLogoutRedirectUri = "/logout";
 
             const formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
 
@@ -289,7 +289,7 @@
             const clientId = config.client_id;
             const clientSecret = config.client_secret;
             const refreshToken = config.refreshToken;
-            const postLogoutRedirectUri = "http://localhost:8083/oauth2/authorization/external";
+            const postLogoutRedirectUri = "/logout";
 
             const formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
 
