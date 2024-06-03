@@ -23,28 +23,7 @@ public class KeycloakController {
     private String realm;
 
     @GetMapping(path = "/")
-    public String index(Model model, HttpSession session) {
-
-        // 세션에서 accessToken 가져오기
-        String accessToken = (String) session.getAttribute("accessToken");
-        // 세션에서 refreshToken 가져오기
-        String refreshToken = (String) session.getAttribute("refreshToken");
-
-        OAuth2User user = (OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        // 인증 객체 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        System.out.println("user.getAttribute(\"name\") : " + user.getAttribute("name"));
-        System.out.println("user.getAttribute(\"email\") : " + user.getAttribute("email"));
-        System.out.println("accessToken : " + accessToken);
-        System.out.println("refreshToken : " + refreshToken);
-
-        model.addAttribute("name", user.getAttribute("name"));
-        model.addAttribute("email", user.getAttribute("email"));
-        model.addAttribute("accessToken", accessToken);
-        model.addAttribute("refreshToken", refreshToken);
-
+    public String index() {
         return "index";
     }
 
