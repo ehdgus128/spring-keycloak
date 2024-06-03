@@ -62,6 +62,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             request.getSession().setAttribute("accessToken", accessTokenValue);
             // refreshToken을 세션에 저장
             request.getSession().setAttribute("refreshToken", refreshTokenValue);
+            // name을 세션에 저장
+            request.getSession().setAttribute("name", user.getAttribute("name"));
+            // email을 세션에 저장
+            request.getSession().setAttribute("email", user.getAttribute("email"));
 
             // 액세스 토큰을 포함하여 리다이렉트
             response.sendRedirect("/");

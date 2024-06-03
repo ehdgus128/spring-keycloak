@@ -85,6 +85,34 @@
                                 </tfoot>
                                 <tbody>
                                 <tr>
+                                    <td>/realms/{realm-name}/protocol/openid-connect/token</td>
+                                    <td>POST</td>
+                                    <td>Keycloak Access Token 발급</td>
+                                    <td>client_id, client_secret, grant_type</td>
+                                    <td>200 OK</td>
+                                </tr>
+                                <tr>
+                                    <td>/realms/{realm-name}/protocol/openid-connect/logout</td>
+                                    <td>POST</td>
+                                    <td>Keycloak 로그아웃</td>
+                                    <td>client_id, client_secret, refresh_token, post_logout_redirect_uri</td>
+                                    <td>204 No Content</td>
+                                </tr>
+                                <tr>
+                                    <td>/admin/realms/{realm-name}/ui-ext/brute-force-user</td>
+                                    <td>GET</td>
+                                    <td>Keycloak 사용자 목록 및 상태 조회</td>
+                                    <td>None</td>
+                                    <td>200 OK</td>
+                                </tr>
+                                <tr>
+                                    <td>/admin/realms/{realm-name}/attack-detection/brute-force/users</td>
+                                    <td>DELETE</td>
+                                    <td>Keycloak 사용자계정 잠금 해제</td>
+                                    <td>userId</td>
+                                    <td>204 No Content</td>
+                                </tr>
+                                <tr>
                                     <td>/api/users</td>
                                     <td>GET</td>
                                     <td>Retrieve a list of users</td>
