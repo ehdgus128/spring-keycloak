@@ -2,6 +2,7 @@ package com.edw.config;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,9 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    @Value("${keycloak.login-url}")
+    private String loginUrl;
 
     @Autowired
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
@@ -55,13 +59,13 @@ public class SecurityConfiguration {
                 .cors()
                 .and()
                 .oauth2Login()
-                .loginPage("/oauth2/authorization/external")  // 사용자 정의 로그인 페이지 설정
+                .loginPage(loginUrl)  // 사용자 정의 로그인 페이지 설정
                 .successHandler(customAuthenticationSuccessHandler)
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .addLogoutHandler(customLogoutSuccessHandler)
-                .logoutSuccessUrl("/oauth2/authorization/external")  // 로그아웃 후 리디렉션 URL 설정
+                .logoutSuccessUrl(loginUrl)  // 로그아웃 후 리디렉션 URL 설정
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .and()

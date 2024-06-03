@@ -1,3 +1,32 @@
+## Sub Client Server 구성 시 설정 (Main Portal 아님 !!)
+```
+1) CustomAuthenticationSuccessHandler.java 추가
+
+2) SecurityConfiguration.java 추가 / 수정
+
+3) application.properties 설정 예시
+
+    ## Spring Security OAuth2 
+    spring.security.oauth2.client.provider.external.issuer-uri=http://172.30.1.54:8080/realms/external
+    spring.security.oauth2.client.registration.external.provider=external
+    spring.security.oauth2.client.registration.external.client-name=resource-server1
+    spring.security.oauth2.client.registration.external.client-id=resource-server1
+    spring.security.oauth2.client.registration.external.client-secret=your_client_secret
+    spring.security.oauth2.client.registration.external.scope=openid,offline_access,profile
+    spring.security.oauth2.client.registration.external.authorization-grant-type=authorization_code
+
+    ## Keycloak
+    keycloak.realm=external
+    keycloak.resource=resource-server1
+    keycloak.auth-server-url=https://172.30.1.54:8080/realms/external
+    keycloak.login-url=http://172.30.1.93:8083/oauth2/authorization/external
+    keycloak.ssl-required=external
+    keycloak.public-client=true
+    keycloak.use-resource-role-mappings=true
+    keycloak.principal-attribute=preferred_username
+    keycloak.redirect-uri=http://172.30.1.93:8083
+```
+
 ## 개인 메모 (작업 위치 변경 시 설정 확인)
 ```
 1) application.properties

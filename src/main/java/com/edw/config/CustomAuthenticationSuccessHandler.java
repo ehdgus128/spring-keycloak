@@ -1,5 +1,6 @@
 package com.edw.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -26,13 +27,16 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Autowired
     private OAuth2AuthorizedClientRepository authorizedClientRepository;
 
+    @Value("${keycloak.realm}")
+    private String realm;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         // 로그인 성공 후 사용자 정보 가져오기
         OAuth2User user = (OAuth2User) authentication.getPrincipal();
 
         // 클라이언트 등록 정보 가져오기
-        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId("external");
+        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(realm);
 
         // OAuth2AuthorizedClientProvider를 사용하여 OAuth2AuthorizedClientManager 초기화
         OAuth2AuthorizedClientProvider authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
@@ -46,7 +50,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
 
         // OAuth2AuthorizeRequest 생성
-        OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest.withClientRegistrationId("external")
+        OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest.withClientRegistrationId(realm)
                 .principal(authentication)
                 .attribute(HttpServletRequest.class.getName(), request)
                 .attribute(HttpServletResponse.class.getName(), response)
