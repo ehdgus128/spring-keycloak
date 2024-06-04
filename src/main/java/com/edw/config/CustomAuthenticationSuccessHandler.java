@@ -37,6 +37,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         // 클라이언트 등록 정보 가져오기
         ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(realm);
+        System.out.println("clientRegistration : " + clientRegistration);
 
         // OAuth2AuthorizedClientProvider를 사용하여 OAuth2AuthorizedClientManager 초기화
         OAuth2AuthorizedClientProvider authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
@@ -62,16 +63,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             String accessTokenValue = authorizedClient.getAccessToken().getTokenValue();
             String refreshTokenValue = authorizedClient.getRefreshToken().getTokenValue();
 
-            // accessToken을 세션에 저장
+            // accessToken, refreshToken, name, email 세션에 저장
             request.getSession().setAttribute("accessToken", accessTokenValue);
-            // refreshToken을 세션에 저장
             request.getSession().setAttribute("refreshToken", refreshTokenValue);
-            // name을 세션에 저장
             request.getSession().setAttribute("name", user.getAttribute("name"));
-            // email을 세션에 저장
             request.getSession().setAttribute("email", user.getAttribute("email"));
 
-            // 액세스 토큰을 포함하여 리다이렉트
             response.sendRedirect("/");
         } else {
             response.sendRedirect("/login?error");

@@ -1,10 +1,26 @@
-## Sub Client Server 구성 시 설정 (Main Portal 아님 !!)
+## Main Client Server 구성 시 설정
 ```
-1) CustomAuthenticationSuccessHandler.java 추가
+1) Keycloak 연동 시 추가 / 수정해야 할 파일 (security ver.)
+    
+    - CustomAuthenticationSuccessHandler.java
 
-2) SecurityConfiguration.java 추가 / 수정
+    - CustomLogoutSuccessHandler.java
 
-3) application.properties 설정 예시
+    - SecurityConfiguration.java
+
+    - SessionInterceptor.java
+
+    - WebConfig.java
+
+    - KeycloakConfigController.java
+
+    - KeycloakController.java
+
+    - pom.xml
+
+    - + main.html (ex) 사용자 정보조회, 계정 잠금 관리, 로그아웃 등 기존 코드를 keycloak으로 요청)
+
+2) application.properties 설정 예시
 
     ## Spring Security OAuth2 
     spring.security.oauth2.client.provider.external.issuer-uri=http://172.30.1.54:8080/realms/external
@@ -25,6 +41,39 @@
     keycloak.use-resource-role-mappings=true
     keycloak.principal-attribute=preferred_username
     keycloak.redirect-uri=http://172.30.1.93:8083
+```
+
+## Sub Client Server 구성 시 설정
+```
+1) Keycloak 연동 시 추가 / 수정해야 할 파일 (security ver.)
+
+    - CustomAuthenticationSuccessHandler.java
+
+    - SecurityConfiguration.java
+
+    - pom.xml
+
+1) application.properties 설정 예시
+
+    ## Spring Security OAuth2 
+    spring.security.oauth2.client.provider.external.issuer-uri=http://172.30.1.54:8080/realms/external
+    spring.security.oauth2.client.registration.external.provider=external
+    spring.security.oauth2.client.registration.external.client-name=resource-server2
+    spring.security.oauth2.client.registration.external.client-id=resource-server2
+    spring.security.oauth2.client.registration.external.client-secret=your_client_secret
+    spring.security.oauth2.client.registration.external.scope=openid,offline_access,profile
+    spring.security.oauth2.client.registration.external.authorization-grant-type=authorization_code
+
+    ## Keycloak ??? ?? (office)
+    keycloak.realm=external
+    keycloak.resource=resource-server2
+    keycloak.auth-server-url=https://172.30.1.54:8080/realms/external
+    keycloak.login-url=http://172.30.1.93:9999/oauth2/authorization/external
+    keycloak.ssl-required=external
+    keycloak.public-client=true
+    keycloak.use-resource-role-mappings=true
+    keycloak.principal-attribute=preferred_username
+    keycloak.redirect-uri=http://172.30.1.93:9999
 ```
 
 ## 개인 메모 (작업 위치 변경 시 설정 확인)

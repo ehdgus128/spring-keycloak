@@ -28,6 +28,7 @@ public class CustomLogoutSuccessHandler extends SecurityContextLogoutHandler {
 
         // 추가 작업: 로그아웃 후 리디렉션
         try {
+            // 서브 서버의 Spring Security 로그아웃 실행
             response.sendRedirect(logoutUrl);
         } catch (IOException e) {
             throw new RuntimeException(e);
