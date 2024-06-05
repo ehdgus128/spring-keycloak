@@ -10,4 +10,11 @@ public class SwaggerController {
     public String swagger() {
         return "swagger";
     }
+
+    @GetMapping("/session")
+    public String session() {
+        return "session";
+    }
+
+
 }

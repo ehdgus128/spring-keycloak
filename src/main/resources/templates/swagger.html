@@ -74,15 +74,6 @@
                                     <th>Response</th>
                                 </tr>
                                 </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Endpoint</th>
-                                    <th>Method</th>
-                                    <th>Description</th>
-                                    <th>Parameters</th>
-                                    <th>Response</th>
-                                </tr>
-                                </tfoot>
                                 <tbody>
                                 <tr>
                                     <td>/realms/{realm-name}/protocol/openid-connect/token</td>
@@ -113,39 +104,18 @@
                                     <td>204 No Content</td>
                                 </tr>
                                 <tr>
-                                    <td>/api/users</td>
+                                    <td>/admin/realms/{realm-name}/clients/{client_id}/user-sessions</td>
                                     <td>GET</td>
-                                    <td>Retrieve a list of users</td>
-                                    <td>None</td>
+                                    <td>Keycloak 현재 활성화 상태의 세션 조회</td>
+                                    <td>client_id, client_secret</td>
                                     <td>200 OK</td>
                                 </tr>
                                 <tr>
-                                    <td>/api/users</td>
-                                    <td>POST</td>
-                                    <td>Create a new user</td>
-                                    <td>name, email, password</td>
-                                    <td>201 Created</td>
-                                </tr>
-                                <tr>
-                                    <td>/api/users/{id}</td>
+                                    <td>/admin/realms/{realm-name}/clients/{client_id}/offline-sessions</td>
                                     <td>GET</td>
-                                    <td>Retrieve a user by ID</td>
-                                    <td>id</td>
+                                    <td>Keycloak 현재 비활성화 상태의 세션 조회</td>
+                                    <td>client_id, client_secret</td>
                                     <td>200 OK</td>
-                                </tr>
-                                <tr>
-                                    <td>/api/users/{id}</td>
-                                    <td>PUT</td>
-                                    <td>Update a user by ID</td>
-                                    <td>id, name, email, password</td>
-                                    <td>200 OK</td>
-                                </tr>
-                                <tr>
-                                    <td>/api/users/{id}</td>
-                                    <td>DELETE</td>
-                                    <td>Delete a user by ID</td>
-                                    <td>id</td>
-                                    <td>204 No Content</td>
                                 </tr>
                                 </tbody>
                             </table>

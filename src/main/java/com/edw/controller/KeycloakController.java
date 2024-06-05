@@ -97,4 +97,60 @@ public class KeycloakController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error unlocking user");
         }
     }
+
+    @GetMapping("/getUserSessions")
+    public ResponseEntity<String> getSessionInfo(HttpSession session) {
+
+        // office
+        String url = "http://172.30.1.54:8080/admin/realms/external/clients/8153cbfd-04b9-47bb-bd9b-16752eefe330/user-sessions?first=0&max=11";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        // 세션에서 액세스 토큰 가져오기
+        String accessToken = (String) session.getAttribute("accessToken");
+
+        headers.setBearerAuth(accessToken);
+
+        // HTTP 요청을 보냅니다.
+        HttpEntity<String> request = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+
+            System.out.println("response: " + response);
+
+            return ResponseEntity.ok(response.getBody());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching user info");
+        }
+    }
+
+    @GetMapping("/getOfflineSessions")
+    public ResponseEntity<String> getOfflineSessions(HttpSession session) {
+
+        // office
+        String url = "http://172.30.1.54:8080/admin/realms/external/clients/8153cbfd-04b9-47bb-bd9b-16752eefe330/offline-sessions?first=0&max=11";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        // 세션에서 액세스 토큰 가져오기
+        String accessToken = (String) session.getAttribute("accessToken");
+
+        headers.setBearerAuth(accessToken);
+
+        // HTTP 요청을 보냅니다.
+        HttpEntity<String> request = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+
+            System.out.println("response: " + response);
+
+            return ResponseEntity.ok(response.getBody());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching user info");
+        }
+    }
 }
