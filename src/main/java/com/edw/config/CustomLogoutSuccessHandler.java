@@ -12,8 +12,8 @@ import java.io.IOException;
 @Configuration
 public class CustomLogoutSuccessHandler extends SecurityContextLogoutHandler {
 
-    @Value("${logout-url}")
-    private String logoutUrl;
+//    @Value("${logout-url}")
+//    private String logoutUrl;
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         // 기본 로그아웃 처리
@@ -27,11 +27,11 @@ public class CustomLogoutSuccessHandler extends SecurityContextLogoutHandler {
         }
 
         // 추가 작업: 로그아웃 후 리디렉션
-        try {
-            // 서브 서버의 Spring Security 로그아웃 실행
-            response.sendRedirect(logoutUrl);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            // 서브 서버의 Spring Security 로그아웃 실행
+//            response.sendRedirect(logoutUrl);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }

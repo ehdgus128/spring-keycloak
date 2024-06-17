@@ -23,7 +23,7 @@
 2) application.properties 설정 예시
 
     ## Spring Security OAuth2 
-    spring.security.oauth2.client.provider.external.issuer-uri=http://172.30.1.54:8080/realms/external
+    spring.security.oauth2.client.provider.external.issuer-uri=http://172.30.1.130:8080/realms/external
     spring.security.oauth2.client.registration.external.provider=external
     spring.security.oauth2.client.registration.external.client-name=resource-server1
     spring.security.oauth2.client.registration.external.client-id=resource-server1
@@ -34,7 +34,7 @@
     ## Keycloak
     keycloak.realm=external
     keycloak.resource=resource-server1
-    keycloak.auth-server-url=https://172.30.1.54:8080/realms/external
+    keycloak.auth-server-url=https://172.30.1.130:8080/realms/external
     keycloak.login-url=http://172.30.1.93:8083/oauth2/authorization/external
     keycloak.ssl-required=external
     keycloak.public-client=true
@@ -56,7 +56,7 @@
 1) application.properties 설정 예시
 
     ## Spring Security OAuth2 
-    spring.security.oauth2.client.provider.external.issuer-uri=http://172.30.1.54:8080/realms/external
+    spring.security.oauth2.client.provider.external.issuer-uri=http://172.30.1.130:8080/realms/external
     spring.security.oauth2.client.registration.external.provider=external
     spring.security.oauth2.client.registration.external.client-name=resource-server2
     spring.security.oauth2.client.registration.external.client-id=resource-server2
@@ -67,7 +67,7 @@
     ## Keycloak ??? ?? (office)
     keycloak.realm=external
     keycloak.resource=resource-server2
-    keycloak.auth-server-url=https://172.30.1.54:8080/realms/external
+    keycloak.auth-server-url=https://172.30.1.130:8080/realms/external
     keycloak.login-url=http://172.30.1.93:9999/oauth2/authorization/external
     keycloak.ssl-required=external
     keycloak.public-client=true

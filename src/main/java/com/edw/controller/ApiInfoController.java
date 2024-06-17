@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class SwaggerController {
+public class ApiInfoController {
 
-    @GetMapping("/swagger")
-    public String swagger() {
-        return "swagger";
+    @GetMapping("/apiInfo")
+    public String apiInfo() {
+        return "apiInfo";
     }
 
     @GetMapping("/session")
