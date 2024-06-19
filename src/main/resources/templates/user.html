@@ -87,9 +87,6 @@
             cursor: pointer;
             margin: 5px;
         }
-        .logout-button:hover {
-            background-color: #e53935;
-        }
     </style>
 </head>
 <body id="page-top">
@@ -118,8 +115,6 @@
                 </div>
                 <!-- User Information -->
                 <div class="container-custom">
-                    <p>현재 접속 중인 사용자 : <span id="username" th:text="${name}"></span></p>
-                    <p>이메일 : <span id="useremail" th:text="${email}"></span></p>
                     <button id="getUserInfo" class="btn btn-primary btn-icon-split" onclick="getUserInfo()">
                         <span class="icon text-white-50">
                             <i class="fas fa-info-circle"></i>
@@ -128,18 +123,6 @@
                     </button>
                     <p id="userListTitle" class="section-title"></p>
                     <div id="userInfo" class="table-container"></div>
-                    <div id="accessTokenContainer">
-                        <p class="section-title">Access Token</p>
-                        <p id="accessToken" th:text="${accessToken}"></p>
-                        <p class="section-title">Refresh Token</p>
-                        <p id="refreshToken" th:text="${refreshToken}"></p>
-                    </div>
-                    <button class="btn btn-danger btn-icon-split logout-button" onclick="confirmLogout()">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-trash"></i>
-                        </span>
-                        <span class="text">로그아웃</span>
-                    </button>
                 </div>
             </div>
             <!-- /.container-fluid -->
@@ -269,93 +252,6 @@
             })
             .catch(error => console.error('Error unlocking user:', error));
     }
-
-    async function getConfig() {
-        try {
-            const response = await fetch("/keycloak-config");
-            if (!response.ok) {
-                throw new Error("Failed to fetch keycloak config");
-            }
-            return await response.json();
-        } catch (error) {
-            console.error("Error fetching keycloak config:", error);
-            throw error;
-        }
-    }
-
-    function confirmLogout() {
-        if (confirm("로그아웃 하시겠습니까?")) {
-            logout();
-        }
-    }
-
-    // office
-    async function logout() {
-        console.log("logout 함수 호출됨");
-
-        try {
-            const config = await getConfig();
-            const clientId = config.client_id;
-            const clientSecret = config.client_secret;
-            const refreshToken = config.refreshToken;
-            const postLogoutRedirectUri = "/logout";
-
-            const formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
-
-            const response = await fetch("http://172.30.1.130:8080/realms/external/protocol/openid-connect/logout", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formBody
-            });
-
-            if (response.status === 204) {
-                console.log("로그아웃 성공");
-                alert("로그아웃 성공. 로그인 페이지로 이동합니다.");
-                window.location.href = postLogoutRedirectUri;
-            } else {
-                console.error("로그아웃 실패:", response.status);
-            }
-        } catch (error) {
-            console.error("로그아웃 요청 중 오류 발생:", error);
-        }
-    }
-
-/*
-    // home
-    async function logout() {
-        console.log("logout 함수 호출됨");
-
-        try {
-            const config = await getConfig();
-            const clientId = config.client_id;
-            const clientSecret = config.client_secret;
-            const refreshToken = config.refreshToken;
-            const postLogoutRedirectUri = "/logout";
-
-            const formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
-
-            const response = await fetch("http://localhost:8080/realms/external/protocol/openid-connect/logout", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formBody
-            });
-
-            if (response.status === 204) {
-                console.log("로그아웃 성공");
-                alert("로그아웃 성공. 로그인 페이지로 이동합니다.");
-                window.location.href = postLogoutRedirectUri;
-            } else {
-                console.error("로그아웃 실패:", response.status);
-            }
-        } catch (error) {
-            console.error("로그아웃 요청 중 오류 발생:", error);
-        }
-    }
-*/
 </script>
 </body>
 </html>
