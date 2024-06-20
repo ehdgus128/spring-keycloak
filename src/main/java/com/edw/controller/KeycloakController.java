@@ -1,5 +1,6 @@
 package com.edw.controller;
 
+import com.edw.dto.UserLoginCountDTO;
 import com.edw.service.ClientService;
 import com.edw.service.EventEntityService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,17 +38,31 @@ public class KeycloakController {
 
         try {
             String clientLoginCountsJson = objectMapper.writeValueAsString(eventEntityService.getClientLoginCounts());
-
-            System.out.println("clientLoginCountsJson : " + clientLoginCountsJson);
-
             model.addAttribute("clientLoginCounts", clientLoginCountsJson);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             model.addAttribute("clientLoginCounts", "[]");
         }
 
+        try {
+            String userLoginCountsJson = objectMapper.writeValueAsString(eventEntityService.getUserLoginCounts());
+            model.addAttribute("userLoginCountsJson", userLoginCountsJson);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            model.addAttribute("userLoginCountsJson", "[]");
+        }
+
+        try {
+            String loginErrorsJson = objectMapper.writeValueAsString(eventEntityService.getLoginErrors());
+            model.addAttribute("loginErrorsJson", loginErrorsJson);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            model.addAttribute("loginErrorsJson", "[]");
+        }
+
         return "dashboard";
     }
+
 
     @GetMapping(path = "/user")
     public String index() {

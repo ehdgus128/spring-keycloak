@@ -17,6 +17,8 @@ public class EventEntity {
 
     @Column(name = "event_time")
     private Long eventTime;
+    @Column(name = "user_id")
+    private String user_id;
 
     // Getters and setters
     public String getId() {
@@ -57,5 +59,13 @@ public class EventEntity {
 
     public void setEventTime(Long eventTime) {
         this.eventTime = eventTime;
+    }
+
+    public String getUserId() {
+        return user_id;
+    }
+
+    public void setUserId(String user_id) {
+        this.user_id = user_id;
     }
 }

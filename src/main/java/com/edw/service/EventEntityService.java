@@ -1,6 +1,7 @@
 package com.edw.service;
 
 import com.edw.dto.ClientLoginCountDTO;
+import com.edw.dto.UserLoginCountDTO;
 import com.edw.repository.EventEntityRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,4 +31,18 @@ public class EventEntityService {
     public List<Object[]> getEventCountsByHour(String clientIdPattern) {
         return eventEntityRepository.countEventsByHour(clientIdPattern);
     }
+
+    public List<UserLoginCountDTO> getUserLoginCounts() {
+        List<Object[]> results = eventEntityRepository.findUserLoginCounts(realmId);
+        return results.stream()
+                .map(result -> new UserLoginCountDTO((String) result[0], ((Number) result[1]).longValue()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Object[]> getLoginErrors() {
+        return eventEntityRepository.findLoginErrors();
+    }
+
 }
+
+

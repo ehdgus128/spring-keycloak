@@ -11,7 +11,17 @@ import java.util.List;
 @Repository
 public interface EventEntityRepository extends JpaRepository<EventEntity, String> {
 
-    @Query(value = "SELECT e.client_id as clientId, COUNT(*) as count FROM event_entity e WHERE e.realm_id = :realmId AND e.type = 'LOGIN' GROUP BY e.client_id", nativeQuery = true)
+    @Query(value = """
+            SELECT c.client_id AS clientId, COALESCE(e.login_count, 0) AS count
+            FROM (SELECT client_id FROM client
+            WHERE realm_id = :realmId AND full_scope_allowed = 'true') AS c
+            LEFT JOIN (SELECT client_id, COUNT(*) AS login_count
+                       FROM event_entity
+                       WHERE realm_id = :realmId AND type = 'LOGIN'
+                       GROUP BY client_id) AS e
+            ON c.client_id = e.client_id
+            ORDER BY c.client_id
+            """, nativeQuery = true)
     List<Object[]> findClientLoginCounts(@Param("realmId") String realmId);
 
     @Query(value = """
@@ -20,7 +30,7 @@ public interface EventEntityRepository extends JpaRepository<EventEntity, String
             ),
             hourly_events AS (
                 SELECT 
-                    EXTRACT(HOUR FROM TO_TIMESTAMP(event_time / 1000) AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Seoul') AS event_hour_kst
+                    EXTRACT(HOUR FROM TO_TIMESTAMP(event_time / 1000) AT TIME ZONE 'Asia/Seoul') AS event_hour_kst
                 FROM 
                     event_entity
                 WHERE 
@@ -40,4 +50,22 @@ public interface EventEntityRepository extends JpaRepository<EventEntity, String
                 a.event_hour_kst
             """, nativeQuery = true)
     List<Object[]> countEventsByHour(@Param("clientIdPattern") String clientIdPattern);
+
+    @Query(value = """
+        SELECT user_id, COUNT(*) AS count
+        FROM event_entity
+        WHERE realm_id = :realmId AND type = 'LOGIN'
+        GROUP BY user_id
+        ORDER BY count DESC
+        """, nativeQuery = true)
+    List<Object[]> findUserLoginCounts(@Param("realmId") String realmId);
+
+    @Query(value = """
+        SELECT error, COUNT(*) AS count
+        FROM event_entity
+        WHERE type = 'LOGIN_ERROR'
+        GROUP BY error
+        ORDER BY 2
+        """, nativeQuery = true)
+    List<Object[]> findLoginErrors();
 }
