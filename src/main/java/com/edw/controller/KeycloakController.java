@@ -144,7 +144,7 @@ public class KeycloakController {
     public ResponseEntity<String> getSessionInfo(HttpSession session) {
 
         // office
-        String url = "http://172.30.1.130:8080/admin/realms/external/clients/8153cbfd-04b9-47bb-bd9b-16752eefe330/user-sessions?first=0&max=11";
+        String url = "http://172.30.1.130:8080/admin/realms/external/ui-ext/sessions?first=0&max=11&type=REGULAR&search=";
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -172,7 +172,7 @@ public class KeycloakController {
     public ResponseEntity<String> getOfflineSessions(HttpSession session) {
 
         // office
-        String url = "http://172.30.1.130:8080/admin/realms/external/clients/8153cbfd-04b9-47bb-bd9b-16752eefe330/offline-sessions?first=0&max=11";
+        String url = "http://172.30.1.130:8080/admin/realms/external/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=";
 
         HttpHeaders headers = new HttpHeaders();
 

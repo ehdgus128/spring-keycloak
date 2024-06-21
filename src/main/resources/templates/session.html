@@ -173,7 +173,7 @@
 
         var tableHeader = document.createElement('thead');
         var headerRow = tableHeader.insertRow();
-        var headers = ['Username', 'Start Time', 'Last Access Time', 'IP Address', 'Status'];
+        var headers = ['Username', 'Status', 'Client', 'Start Time', 'Last Access Time', 'IP Address'];
         headers.forEach(function(header) {
             var headerCell = document.createElement('th');
             headerCell.textContent = header;
@@ -184,12 +184,18 @@
         var tableBody = document.createElement('tbody');
         data.forEach(function(item) {
             var row = tableBody.insertRow();
+
+            // 클라이언트 이름을 불러오는 코드 추가
+            var clientKey = Object.keys(item.clients)[0];
+            var clientValue = item.clients[clientKey];
+
             var values = [
                 item.username,
+                status,
+                clientValue,
                 convertTimestamp(item.start),
                 convertTimestamp(item.lastAccess),
-                item.ipAddress,
-                status  // 추가된 Status 컬럼
+                item.ipAddress
             ];
             values.forEach(function(value) {
                 var cell = row.insertCell();
