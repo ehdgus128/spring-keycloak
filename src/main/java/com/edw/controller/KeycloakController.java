@@ -83,7 +83,7 @@ public class KeycloakController {
     public ResponseEntity<String> getUserInfo(HttpSession session) {
 
         // office
-        String url = "http://172.30.1.130:8080/admin/realms/external/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=";
+        String url = "http://172.30.1.132/admin/realms/external/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=";
         // home
 //        String url = "http://localhost:8080/admin/realms/external/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=";
 
@@ -113,7 +113,7 @@ public class KeycloakController {
     public ResponseEntity<String> unlockUser(@PathVariable String userId, HttpSession session) {
 
         // office
-        String url = String.format("http://172.30.1.130:8080/admin/realms/external/attack-detection/brute-force/users/%s", userId);
+        String url = String.format("http://172.30.1.132/admin/realms/external/attack-detection/brute-force/users/%s", userId);
         // home
 //        String url = String.format("http://localhost:8080/admin/realms/external/attack-detection/brute-force/users/%s", userId);
 
@@ -144,7 +144,7 @@ public class KeycloakController {
     public ResponseEntity<String> getSessionInfo(HttpSession session) {
 
         // office
-        String url = "http://172.30.1.130:8080/admin/realms/external/ui-ext/sessions?first=0&max=11&type=REGULAR&search=";
+        String url = "http://172.30.1.132/admin/realms/external/ui-ext/sessions?first=0&max=11&type=REGULAR&search=";
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -172,7 +172,7 @@ public class KeycloakController {
     public ResponseEntity<String> getOfflineSessions(HttpSession session) {
 
         // office
-        String url = "http://172.30.1.130:8080/admin/realms/external/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=";
+        String url = "http://172.30.1.132/admin/realms/external/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=";
 
         HttpHeaders headers = new HttpHeaders();
 
