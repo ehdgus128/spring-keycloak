@@ -63,6 +63,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             String accessTokenValue = authorizedClient.getAccessToken().getTokenValue();
             String refreshTokenValue = authorizedClient.getRefreshToken().getTokenValue();
 
+            System.out.println("refreshTokenValue : " + refreshTokenValue);
+
             // accessToken, refreshToken, name, email 세션에 저장
             request.getSession().setAttribute("accessToken", accessTokenValue);
             request.getSession().setAttribute("refreshToken", refreshTokenValue);
