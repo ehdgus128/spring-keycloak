@@ -70,10 +70,11 @@
                     <!-- Card Content - Collapse -->
                     <div class="collapse" id="getAccessTokenApi">
                         <div class="card-body">
-
-                            <h3 class="m-0 font-weight-bold text-gray-900">POST/realms/{realm}/protocol/openid-connect/token</h3>
+                            <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-gray-900">Authorization</h4>
+                            <h5 class="m-0 font-weight-bold text-success">POST/realms/{realm}/protocol/openid-connect/token</h5>
+                            <br>
+                            <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="getAccessTokenApiTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -90,7 +91,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <h4 class="m-0 font-weight-bold text-gray-900">Headers</h4>
+                            <h5 class="m-0 font-weight-bold text-gray-900">Headers</h5>
                             <table class="table table-bordered" id="getAccessTokenApiTable2" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -105,7 +106,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <h4 class="m-0 font-weight-bold text-gray-900">Body (x-www-form-urlencoded)</h4>
+                            <h5 class="m-0 font-weight-bold text-gray-900">Body (x-www-form-urlencoded)</h5>
                             <table class="table table-bordered" id="getAccessTokenApiTable3" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -128,6 +129,35 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <hr>
+                            <h4 class="m-0 font-weight-bold text-danger">Response</h4>
+                            <hr>
+                            <pre>
+<code class="language-json">{
+    "access_token": {access_token},
+    "expires_in": 1740,
+    "refresh_expires_in": 1800,
+    "refresh_token": {refresh_token},
+    "token_type": "Bearer",
+    "not-before-policy": 1718607542,
+    "session_state": "760c6c90-82.........",
+    "scope": "email profile"
+}</code>
+                            </pre>
+                            <table class="table table-bordered" id="getAccessTokenApiResponse" width="30%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Message</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>200</td>
+                                    <td>OK</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -142,10 +172,11 @@
                     <!-- Card Content - Collapse -->
                     <div class="collapse" id="getLogoutApi">
                         <div class="card-body">
-
-                            <h3 class="m-0 font-weight-bold text-gray-900">POST/realms/{realm}/protocol/openid-connect/logout</h3>
+                            <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-gray-900">Body (x-www-form-urlencoded)</h4>
+                            <h5 class="m-0 font-weight-bold text-success">POST/realms/{realm}/protocol/openid-connect/logout</h5>
+                            <br>
+                            <h5 class="m-0 font-weight-bold text-gray-900">Body (x-www-form-urlencoded)</h5>
                             <table class="table table-bordered" id="getLogoutApiTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -172,6 +203,26 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <hr>
+                            <h4 class="m-0 font-weight-bold text-danger">Response</h4>
+                            <hr>
+                            <pre>
+<code class="language-json">{}</code>
+                            </pre>
+                            <table class="table table-bordered" id="getLogoutApiResponse" width="30%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Message</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>204</td>
+                                    <td>No Content</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -186,10 +237,11 @@
                     <!-- Card Content - Collapse -->
                     <div class="collapse" id="getUserInfoApi">
                         <div class="card-body">
-
-                            <h3 class="m-0 font-weight-bold text-gray-900">GET/admin/realms/{realm}/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=</h3>
+                            <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-gray-900">Authorization</h4>
+                            <h4 class="m-0 font-weight-bold text-success">GET/admin/realms/{realm}/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=</h4>
+                            <br>
+                            <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="getUserInfoApiTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -201,6 +253,48 @@
                                 <tr>
                                     <td>Bearer Token</td>
                                     <td>{accessToken}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <h4 class="m-0 font-weight-bold text-danger">Response</h4>
+                            <hr>
+                            <pre>
+<code class="language-json">{
+    "id": {id},
+    "username": {username},
+    "firstName": {firstName},
+    "lastName": {lastName},
+    "email": {email},
+    "emailVerified": true,
+    "createdTimestamp": 1715821276443,
+    "enabled": true,
+    "access": {
+        "manageGroupMembership": true,
+        "view": true,
+        "mapRoles": true,
+        "impersonate": true,
+        "manage": true
+    },
+    "bruteForceStatus": {
+        "numFailures": 0,
+        "disabled": false,
+        "lastIPFailure": "n/a",
+        "lastFailure": 0
+    }
+}</code>
+                            </pre>
+                            <table class="table table-bordered" id="getUserInfoApiResponse" width="30%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Message</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>200</td>
+                                    <td>OK</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -218,9 +312,11 @@
                     <!-- Card Content - Collapse -->
                     <div class="collapse" id="unlockUserApi">
                         <div class="card-body">
-                            <h3 class="m-0 font-weight-bold text-gray-900">DELETE/admin/realms/{realm}/attack-detection/brute-force/users/{userId}</h3>
+                            <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-gray-900">Authorization</h4>
+                            <h4 class="m-0 font-weight-bold text-success">DELETE/admin/realms/{realm}/attack-detection/brute-force/users/{userId}</h4>
+                            <br>
+                            <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="unlockUserApiTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -232,6 +328,26 @@
                                 <tr>
                                     <td>Bearer Token</td>
                                     <td>{accessToken}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <h4 class="m-0 font-weight-bold text-danger">Response</h4>
+                            <hr>
+                            <pre>
+<code class="language-json">{}</code>
+                            </pre>
+                            <table class="table table-bordered" id="unlockUserApiResponse" width="30%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Message</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>204</td>
+                                    <td>No Content</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -249,9 +365,11 @@
                     <!-- Card Content - Collapse -->
                     <div class="collapse" id="getOnlineSessionApi">
                         <div class="card-body">
-                            <h3 class="m-0 font-weight-bold text-gray-900">GET/admin/realms/{realm}/ui-ext/sessions?first=0&max=11&type=REGULAR&search=</h3>
+                            <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-gray-900">Authorization</h4>
+                            <h4 class="m-0 font-weight-bold text-success">GET/admin/realms/{realm}/ui-ext/sessions?first=0&max=11&type=REGULAR&search=</h4>
+                            <br>
+                            <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="getOnlineSessionApiTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -263,6 +381,38 @@
                                 <tr>
                                     <td>Bearer Token</td>
                                     <td>{accessToken}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <h4 class="m-0 font-weight-bold text-danger">Response</h4>
+                            <hr>
+                            <pre>
+<code class="language-json">{
+    "id": {id},
+    "username": {username},
+    "userId": {userId},
+    "ipAddress": {ipAddress},
+    "start": 1719365574000,
+    "lastAccess": 1719365575000,
+    "transientUser": false,
+    "type": "REGULAR",
+    "clients": {
+        {clientId}: {clientName}
+    }
+}</code>
+                            </pre>
+                            <table class="table table-bordered" id="getOnlineSessionApiResponse" width="30%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Message</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>200</td>
+                                    <td>OK</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -280,9 +430,11 @@
                     <!-- Card Content - Collapse -->
                     <div class="collapse" id="getOfflineSessionApi">
                         <div class="card-body">
-                            <h3 class="m-0 font-weight-bold text-gray-900">GET/admin/realms/{realm}/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=</h3>
+                            <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-gray-900">Authorization</h4>
+                            <h4 class="m-0 font-weight-bold text-success">GET/admin/realms/{realm}/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=</h4>
+                            <hr>
+                            <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="getOfflineSessionApiTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -294,6 +446,38 @@
                                 <tr>
                                     <td>Bearer Token</td>
                                     <td>{accessToken}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <h4 class="m-0 font-weight-bold text-danger">Response</h4>
+                            <hr>
+                            <pre>
+<code class="language-json">{
+    "id": {id},
+    "username": {username},
+    "userId": {userId},
+    "ipAddress": {ipAddress},
+    "start": 1719365574000,
+    "lastAccess": 1719365575000,
+    "transientUser": false,
+    "type": "REGULAR",
+    "clients": {
+        {clientId}: {clientName}
+    }
+}</code>
+                            </pre>
+                            <table class="table table-bordered" id="getOfflineSessionApiResponse" width="30%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Message</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>200</td>
+                                    <td>OK</td>
                                 </tr>
                                 </tbody>
                             </table>
