@@ -36,6 +36,24 @@
         .table th, .table td {
             text-align: center; /* 텍스트 가운데 정렬 */
         }
+        .table-bordered {
+            border: 1px solid black; /* 테이블 테두리 색상 변경 */
+            border-collapse: collapse; /* 테이블 내부 셀의 경계를 합침 */
+        }
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid black; /* 테이블 셀 테두리 색상 변경 */
+        }
+        .table-bordered thead th {
+            border: 1px solid black; /* thead 셀 테두리 색상 변경 */
+        }
+        pre code {
+            background-color: black; /* 배경색 검정색으로 변경 */
+            color: white; /* 글자색 흰색으로 변경 */
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+        }
     </style>
 </head>
 <body id="page-top">
@@ -61,7 +79,7 @@
                 </div>
 
                 <!-- Access Token 발급 -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 bg-gray-200">
                     <!-- Card Header - Accordion -->
                     <a href="#getAccessTokenApi" class="d-block card-header py-3" data-toggle="collapse"
                        role="button" aria-expanded="false" aria-controls="getAccessTokenApi">
@@ -72,7 +90,7 @@
                         <div class="card-body">
                             <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h5 class="m-0 font-weight-bold text-success">POST/realms/{realm}/protocol/openid-connect/token</h5>
+                            <h5 class="m-0 font-weight-bold text-success">POST<br>/realms/{realm}/protocol/openid-connect/token</h5>
                             <br>
                             <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="getAccessTokenApiTable1" width="100%" cellspacing="0">
@@ -163,7 +181,7 @@
                 </div>
 
                 <!-- Logout -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 bg-gray-200">
                     <!-- Card Header - Accordion -->
                     <a href="#getLogoutApi" class="d-block card-header py-3" data-toggle="collapse"
                        role="button" aria-expanded="false" aria-controls="getLogoutApi">
@@ -174,7 +192,7 @@
                         <div class="card-body">
                             <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h5 class="m-0 font-weight-bold text-success">POST/realms/{realm}/protocol/openid-connect/logout</h5>
+                            <h5 class="m-0 font-weight-bold text-success">POST<br>/realms/{realm}/protocol/openid-connect/logout</h5>
                             <br>
                             <h5 class="m-0 font-weight-bold text-gray-900">Body (x-www-form-urlencoded)</h5>
                             <table class="table table-bordered" id="getLogoutApiTable1" width="100%" cellspacing="0">
@@ -228,7 +246,7 @@
                 </div>
 
                 <!-- 사용자 목록 및 상태 조회 -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 bg-gray-200">
                     <!-- Card Header - Accordion -->
                     <a href="#getUserInfoApi" class="d-block card-header py-3" data-toggle="collapse"
                        role="button" aria-expanded="false" aria-controls="getUserInfoApi">
@@ -239,7 +257,7 @@
                         <div class="card-body">
                             <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-success">GET/admin/realms/{realm}/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=</h4>
+                            <h4 class="m-0 font-weight-bold text-success">GET<br>/admin/realms/{realm}/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=</h4>
                             <br>
                             <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="getUserInfoApiTable1" width="100%" cellspacing="0">
@@ -303,7 +321,7 @@
                 </div>
 
                 <!-- 특정 사용자 계정 잠금 해제 -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 bg-gray-200">
                     <!-- Card Header - Accordion -->
                     <a href="#unlockUserApi" class="d-block card-header py-3" data-toggle="collapse"
                        role="button" aria-expanded="false" aria-controls="unlockUserApi">
@@ -314,7 +332,7 @@
                         <div class="card-body">
                             <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-success">DELETE/admin/realms/{realm}/attack-detection/brute-force/users/{userId}</h4>
+                            <h4 class="m-0 font-weight-bold text-success">DELETE<br>/admin/realms/{realm}/attack-detection/brute-force/users/{userId}</h4>
                             <br>
                             <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="unlockUserApiTable1" width="100%" cellspacing="0">
@@ -356,7 +374,7 @@
                 </div>
 
                 <!-- 활성화 상태인 세션 조회 -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 bg-gray-200">
                     <!-- Card Header - Accordion -->
                     <a href="#getOnlineSessionApi" class="d-block card-header py-3" data-toggle="collapse"
                        role="button" aria-expanded="false" aria-controls="getOnlineSessionApi">
@@ -367,7 +385,7 @@
                         <div class="card-body">
                             <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-success">GET/admin/realms/{realm}/ui-ext/sessions?first=0&max=11&type=REGULAR&search=</h4>
+                            <h4 class="m-0 font-weight-bold text-success">GET<br>/admin/realms/{realm}/ui-ext/sessions?first=0&max=11&type=REGULAR&search=</h4>
                             <br>
                             <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="getOnlineSessionApiTable1" width="100%" cellspacing="0">
@@ -421,7 +439,7 @@
                 </div>
 
                 <!-- 비활성화 상태인 세션 조회 -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 bg-gray-200">
                     <!-- Card Header - Accordion -->
                     <a href="#getOfflineSessionApi" class="d-block card-header py-3" data-toggle="collapse"
                        role="button" aria-expanded="false" aria-controls="getOfflineSessionApi">
@@ -432,7 +450,7 @@
                         <div class="card-body">
                             <h4 class="m-0 font-weight-bold text-danger">Request</h4>
                             <hr>
-                            <h4 class="m-0 font-weight-bold text-success">GET/admin/realms/{realm}/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=</h4>
+                            <h4 class="m-0 font-weight-bold text-success">GET<br>/admin/realms/{realm}/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=</h4>
                             <hr>
                             <h5 class="m-0 font-weight-bold text-gray-900">Authorization</h5>
                             <table class="table table-bordered" id="getOfflineSessionApiTable1" width="100%" cellspacing="0">
@@ -461,7 +479,7 @@
     "start": 1719365574000,
     "lastAccess": 1719365575000,
     "transientUser": false,
-    "type": "REGULAR",
+    "type": "OFFLINE",
     "clients": {
         {clientId}: {clientName}
     }

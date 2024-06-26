@@ -16,5 +16,9 @@ public class ApiInfoController {
         return "session";
     }
 
+    @GetMapping("/log")
+    public String log() {
+        return "log";
+    }
 
 }
