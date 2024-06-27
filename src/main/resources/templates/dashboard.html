@@ -63,7 +63,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Keycloak Dashboard Test</h1>
+                <h1 class="h3 mb-2 text-gray-800" th:if="${session.roles.contains('admin')}">Keycloak Dashboard Test</h1>
                 <br>
 
                 <!-- Content Row -->
@@ -176,6 +176,8 @@
                 <p id="accessToken" th:text="${accessToken}"></p>
                 <p class="section-title">Refresh Token</p>
                 <p id="refreshToken" th:text="${refreshToken}"></p>
+                <p class="section-title">Roles</p>
+                <p id="roles" th:text="${session.roles}"></p>
             </div>
         </div>
         <div th:replace="~{bootstrap/footer.html}"></div>

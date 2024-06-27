@@ -155,6 +155,8 @@
                 return response.json();
             })
             .then(data => {
+                // 세션 정보를 최신 시간 순서로 정렬
+                data.sort((a, b) => b.start - a.start);
                 console.log("오프라인 세션 정보:", data);
                 displaySessionInfo(data, "오프라인");  // 상태를 "오프라인"으로 설정
             })

@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -82,10 +85,8 @@ public class KeycloakController {
     @GetMapping("/getUserInfo")
     public ResponseEntity<String> getUserInfo(HttpSession session) {
 
-        // office
-        String url = "http://172.30.1.132/admin/realms/external/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=";
-        // home
-//        String url = "http://localhost:8080/admin/realms/external/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=";
+//        String url = "http://172.30.1.132/admin/realms/external/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=";
+        String url = "http://172.30.1.132:8180/admin/realms/external/ui-ext/brute-force-user?briefRepresentation=true&first=0&max=11&q=";
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -112,10 +113,8 @@ public class KeycloakController {
     @DeleteMapping("/unlockUser/{userId}")
     public ResponseEntity<String> unlockUser(@PathVariable String userId, HttpSession session) {
 
-        // office
-        String url = String.format("http://172.30.1.132/admin/realms/external/attack-detection/brute-force/users/%s", userId);
-        // home
-//        String url = String.format("http://localhost:8080/admin/realms/external/attack-detection/brute-force/users/%s", userId);
+//        String url = String.format("http://172.30.1.132/admin/realms/external/attack-detection/brute-force/users/%s", userId);
+        String url = String.format("http://172.30.1.132:8180/admin/realms/external/attack-detection/brute-force/users/%s", userId);
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -143,8 +142,8 @@ public class KeycloakController {
     @GetMapping("/getUserSessions")
     public ResponseEntity<String> getSessionInfo(HttpSession session) {
 
-        // office
-        String url = "http://172.30.1.132/admin/realms/external/ui-ext/sessions?first=0&max=11&type=REGULAR&search=";
+//        String url = "http://172.30.1.132/admin/realms/external/ui-ext/sessions?first=0&max=11&type=REGULAR&search=";
+        String url = "http://172.30.1.132:8180/admin/realms/external/ui-ext/sessions?first=0&max=11&type=REGULAR&search=";
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -171,8 +170,8 @@ public class KeycloakController {
     @GetMapping("/getOfflineSessions")
     public ResponseEntity<String> getOfflineSessions(HttpSession session) {
 
-        // office
-        String url = "http://172.30.1.132/admin/realms/external/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=";
+//        String url = "http://172.30.1.132/admin/realms/external/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=";
+        String url = "http://172.30.1.132:8180/admin/realms/external/ui-ext/sessions?first=0&max=11&type=OFFLINE&search=";
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -187,8 +186,6 @@ public class KeycloakController {
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
-
-            System.out.println("response: " + response);
 
             return ResponseEntity.ok(response.getBody());
         } catch (Exception e) {

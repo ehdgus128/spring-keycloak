@@ -17,6 +17,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -63,13 +66,22 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             String accessTokenValue = authorizedClient.getAccessToken().getTokenValue();
             String refreshTokenValue = authorizedClient.getRefreshToken().getTokenValue();
 
+            System.out.println("authorizedClient : " + authorizedClient.getAccessToken().getScopes());
+
             System.out.println("refreshTokenValue : " + refreshTokenValue);
+
+            // user 객체에서 roles 정보 추출
+            Map<String, Object> realmAccess = (Map<String, Object>) user.getAttribute("realm_access");
+            List<String> rolesList = (List<String>) realmAccess.get("roles");
+            String roles = rolesList.stream().collect(Collectors.joining(", "));
+            System.out.println("roles : " + roles);
 
             // accessToken, refreshToken, name, email 세션에 저장
             request.getSession().setAttribute("accessToken", accessTokenValue);
             request.getSession().setAttribute("refreshToken", refreshTokenValue);
             request.getSession().setAttribute("name", user.getAttribute("name"));
             request.getSession().setAttribute("email", user.getAttribute("email"));
+            request.getSession().setAttribute("roles", roles);
 
             response.sendRedirect("/");
         } else {

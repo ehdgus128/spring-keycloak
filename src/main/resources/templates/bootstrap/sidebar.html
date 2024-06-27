@@ -1,8 +1,18 @@
+<style>
+
+    /*비활성화된 링크 스타일 (alert 띄울 경우에 아래 스타일 주석해야함)*/
+    .disabled-link {
+        pointer-events: none;
+        cursor: not-allowed;
+        color: gray;
+    }
+
+</style>
 <!-- sidebar.html -->
 <ul class="navbar-nav bg-gray-900 sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <div class="sidebar-brand-text mx-3">Client Main Portal</div>
+        <div class="sidebar-brand-text mx-3">EZACE<br>Main Portal</div>
     </a>
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
@@ -12,12 +22,32 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
+
     <!-- Nav Item - User Management -->
-    <li class="nav-item active">
+<!-- 1. 버튼 아예 안보이게  -->
+    <li class="nav-item" th:if="${#strings.contains(session.roles, 'admin')}">
         <a class="nav-link" href="/user">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>사용자 관리</span></a>
+            <i class="fas fa-fw fa-tachometer-alt" style="color:white;"></i>
+            <span>사용자 관리</span>
+        </a>
     </li>
+<!-- 2. 버튼 못누르게  -->
+<!--    <li class="nav-item" th:classappend="${session.roles.contains('admin')} ? 'active' : ''">-->
+<!--        <a class="nav-link" href="/user" th:classappend="${!session.roles.contains('admin')} ? 'disabled-link' : ''"-->
+<!--           th:attr="onclick=${!session.roles.contains('admin')} ? 'return false;' : ''">-->
+<!--            <i class="fas fa-fw fa-tachometer-alt"></i>-->
+<!--            <span>사용자 관리</span>-->
+<!--        </a>-->
+<!--    </li>-->
+<!--  3. 버튼 누르면 alert  -->
+<!--    <li class="nav-item" th:classappend="${session.roles.contains('admin')} ? 'active' : ''">-->
+<!--        <a class="nav-link" href="/user" th:classappend="${!session.roles.contains('admin')} ? 'disabled-link' : ''"-->
+<!--           th:attr="onclick=${!session.roles.contains('admin')} ? 'showNoPermissionAlert(event);' : ''">-->
+<!--            <i class="fas fa-fw fa-tachometer-alt"></i>-->
+<!--            <span>사용자 관리</span>-->
+<!--        </a>-->
+<!--    </li>-->
+
     <!-- Nav Item - Session Management -->
     <li class="nav-item active">
         <a class="nav-link" href="/session">
@@ -121,90 +151,96 @@
     </div>
 </ul>
 <script>
-    async function getConfig() {
-        try {
-            const response = await fetch("/keycloak-config");
-            if (!response.ok) {
-                throw new Error("Failed to fetch keycloak config");
-            }
-            return await response.json();
-        } catch (error) {
-            console.error("Error fetching keycloak config:", error);
-            throw error;
+
+function showNoPermissionAlert(event) {
+    event.preventDefault();
+    alert("권한이 없습니다!!!");
+}
+
+async function getConfig() {
+    try {
+        const response = await fetch("/keycloak-config");
+        if (!response.ok) {
+            throw new Error("Failed to fetch keycloak config");
         }
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching keycloak config:", error);
+        throw error;
     }
+}
 
-    function confirmLogout() {
-        if (confirm("로그아웃 하시겠습니까?")) {
-            logout();
+function confirmLogout() {
+    if (confirm("로그아웃 하시겠습니까?")) {
+        logout();
+    }
+}
+
+// office
+async function logout() {
+    console.log("logout 함수 호출됨");
+
+    try {
+        const config = await getConfig();
+        const clientId = config.client_id;
+        const clientSecret = config.client_secret;
+        const refreshToken = config.refreshToken;
+        const postLogoutRedirectUri = "/logout";
+
+        const formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
+
+        const response = await fetch("http://172.30.1.132:8180/realms/external/protocol/openid-connect/logout", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        });
+
+        if (response.status === 204) {
+            console.log("로그아웃 성공");
+            alert("로그아웃 성공. 로그인 페이지로 이동합니다.");
+            window.location.href = postLogoutRedirectUri;
+        } else {
+            console.error("로그아웃 실패:", response.status);
         }
+    } catch (error) {
+        console.error("로그아웃 요청 중 오류 발생:", error);
     }
-
-    // office
-    async function logout() {
-        console.log("logout 함수 호출됨");
-
-        try {
-            const config = await getConfig();
-            const clientId = config.client_id;
-            const clientSecret = config.client_secret;
-            const refreshToken = config.refreshToken;
-            const postLogoutRedirectUri = "/logout";
-
-            const formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
-
-            const response = await fetch("http://172.30.1.132/realms/external/protocol/openid-connect/logout", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formBody
-            });
-
-            if (response.status === 204) {
-                console.log("로그아웃 성공");
-                alert("로그아웃 성공. 로그인 페이지로 이동합니다.");
-                window.location.href = postLogoutRedirectUri;
-            } else {
-                console.error("로그아웃 실패:", response.status);
-            }
-        } catch (error) {
-            console.error("로그아웃 요청 중 오류 발생:", error);
-        }
-    }
+}
 
 /*
-    // home
-    async function logout() {
-        console.log("logout 함수 호출됨");
+// home
+async function logout() {
+    console.log("logout 함수 호출됨");
 
-        try {
-            const config = await getConfig();
-            const clientId = config.client_id;
-            const clientSecret = config.client_secret;
-            const refreshToken = config.refreshToken;
-            const postLogoutRedirectUri = "/logout";
+    try {
+        const config = await getConfig();
+        const clientId = config.client_id;
+        const clientSecret = config.client_secret;
+        const refreshToken = config.refreshToken;
+        const postLogoutRedirectUri = "/logout";
 
-            const formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
+        const formBody = `client_id=${clientId}&refresh_token=${refreshToken}&client_secret=${clientSecret}&post_logout_redirect_uri=${postLogoutRedirectUri}`;
 
-            const response = await fetch("http://localhost:8080/realms/external/protocol/openid-connect/logout", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formBody
-            });
+        const response = await fetch("http://localhost:8080/realms/external/protocol/openid-connect/logout", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        });
 
-            if (response.status === 204) {
-                console.log("로그아웃 성공");
-                alert("로그아웃 성공. 로그인 페이지로 이동합니다.");
-                window.location.href = postLogoutRedirectUri;
-            } else {
-                console.error("로그아웃 실패:", response.status);
-            }
-        } catch (error) {
-            console.error("로그아웃 요청 중 오류 발생:", error);
+        if (response.status === 204) {
+            console.log("로그아웃 성공");
+            alert("로그아웃 성공. 로그인 페이지로 이동합니다.");
+            window.location.href = postLogoutRedirectUri;
+        } else {
+            console.error("로그아웃 실패:", response.status);
         }
+    } catch (error) {
+        console.error("로그아웃 요청 중 오류 발생:", error);
     }
+}
 */
 </script>
