@@ -25,7 +25,7 @@
 
     <!-- Nav Item - User Management -->
 <!-- 1. 버튼 아예 안보이게  -->
-    <li class="nav-item" th:if="${#strings.contains(session.roles, 'admin')}">
+    <li class="nav-item active" th:if="${#strings.contains(session.roles, 'admin')}">
         <a class="nav-link" href="/user">
             <i class="fas fa-fw fa-tachometer-alt" style="color:white;"></i>
             <span>사용자 관리</span>
